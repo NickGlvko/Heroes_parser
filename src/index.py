@@ -1,6 +1,7 @@
 import requests
 import re
 
+
 def get_tallest_hero_by_gender_and_employment(gender: str, has_job: bool):
     url = "https://akabab.github.io/superhero-api/api/all.json"
     try:
@@ -9,7 +10,6 @@ def get_tallest_hero_by_gender_and_employment(gender: str, has_job: bool):
     except requests.RequestException as e:
         print(f"Ошибка: {e}")
         return None
-
 
     def get_height_cm(height_list):
         if not height_list or len(height_list) < 2:
@@ -20,7 +20,6 @@ def get_tallest_hero_by_gender_and_employment(gender: str, has_job: bool):
             return int(match.group(1)) if int(match.group(1)) > 0 else None
         return None
 
-
     filtered = []
     for hero in heroes:
         hero_gender = hero.get("appearance", {}).get("gender")
@@ -28,18 +27,16 @@ def get_tallest_hero_by_gender_and_employment(gender: str, has_job: bool):
             continue
 
         occupation = hero.get("work", {}).get("occupation")
-        if has_job and occupation =="-":
+        if has_job and occupation == "-":
             continue
-        if not has_job and not(occupation == "-"):
+        if not has_job and not (occupation == "-"):
             continue
-
 
         height_cm = get_height_cm(hero.get("appearance", {}).get("height", []))
         if height_cm is None:
             continue
 
         filtered.append((height_cm, hero))
-
 
     if not filtered:
         return None
